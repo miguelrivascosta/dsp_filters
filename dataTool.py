@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
+import subprocess
 
 def generateSine(f,fs,tStart, tStop, meanNoise, pNoise):
     
@@ -25,12 +27,13 @@ def writeCoefFile(N):
             f.write(f"{1/N},\n")
         f.write('};')
 
-def printResults():
-    t = loadFile('t')
-    y = loadFile('y')
-    yFilt = loadFile('yFilt')
+def printResults(xAxis1,yAxis1,xAxis2,yAxis2):
+    xAxis1 = loadFile(xAxis1)
+    yAxis1 = loadFile(yAxis1)
+    xAxis2 = loadFile(xAxis2)
+    yAxis2 = loadFile(yAxis2)
     
-    plt.plot(t,y,t,yFilt)
+    plt.plot(xAxis1,yAxis1,xAxis2,yAxis2)
     plt.show()
 
 def loadFile(fileName):
@@ -44,13 +47,28 @@ def saveFile(fileName,arr):
             f.write(str(i)+"\n")
 
 if __name__ == '__main__':
-    '''
-    t,y = generateSine(f = 1, fs = 500, tStart = 0, tStop = 2, meanNoise = 0, pNoise = 0.1)
-    saveFile('t',t)
-    saveFile('y',y)
-    writeCoefFile(N = 20)
-    writeDataFile(y)
-    '''
+    parser = argparse.ArgumentParser(description='Generate sine wave / Print result after filtering')
+    parser.add_argument('--full-process', action = 'store_true')
+    parser.add_argument('--generate-sine', action = 'store_true')
+    parser.add_argument('--print-results', action = 'store_true')
+    args = parser.parse_args()
 
-    printResults()
-    
+    if args.full_process and (not args.generate_sine) and (not args.print_results):
+        t,y = generateSine(f = 1, fs = 500, tStart = 0, tStop = 2, meanNoise = 0, pNoise = 0.1)
+        saveFile('t',t)
+        saveFile('y',y)
+        writeCoefFile(N=20)
+        writeDataFile(y)
+        subprocess.call(['g++','./linearFirFilter.cpp'])
+        subprocess.call('./a.out')
+        printResults('t','y','t','yFilt')
+    elif (not args.full_process) and args.generate_sine and (not args.print_results):
+        t,y = generateSine(f = 1, fs = 500, tStart = 0, tStop = 2, meanNoise = 0, pNoise = 0.1)
+        saveFile('t',t)
+        saveFile('y',y)
+        writeCoefFile(N = 5)
+        writeDataFile(y)
+    elif (not args.full_process) and (not args.generate_sine) and args.print_results:
+        printResults('t','y','t','yFilt')
+    else:
+        print('It is necessary to introduce only 1 option: --full-process/--generate-sinc/--print-results')    
