@@ -57,7 +57,7 @@ if __name__ == '__main__':
         t,y = generateSine(f = 1, fs = 500, tStart = 0, tStop = 2, meanNoise = 0, pNoise = 0.1)
         saveFile('t',t)
         saveFile('y',y)
-        writeCoefFile(N=20)
+        writeCoefFile(N=200)
         writeDataFile(y)
         subprocess.call(['g++','./linearFirFilter.cpp'])
         subprocess.call('./a.out')
