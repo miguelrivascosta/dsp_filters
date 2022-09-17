@@ -11,7 +11,7 @@ int main(){
     double y[dataSize] ={0};
     circularFirFilter(y);
     std::ofstream f;
-    f.open("yFiltCircular");
+    f.open("yFilt_circular");
     for (int i = 0; i < dataSize; i++)
     {
         f << y[i]<<'\n';
@@ -26,7 +26,8 @@ void circularFirFilter(double * y){
     for (int i = 0; i < dataSize; i++)
     {
         *xn_ptr = data[i];
-        xAux_ptr = xn_ptr+i%N;
+        xn_ptr = x+i%N;
+        xAux_ptr = xn_ptr;
         for (int k = 0; k < N; k++)
         {   
             *(y+i) += *xAux_ptr*b[k];
