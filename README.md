@@ -9,4 +9,4 @@ In the repository, the file *data.h* contains samples of a noisy sine wave and t
 
 # Results
 Finally, in the following image it is shown the result of applying the filter:
-![dsp output]https://raw.githubusercontent.com/miguelrivascosta/dsp_filters/master/images/output.png
+![dsp output](https://raw.githubusercontent.com/miguelrivascosta/dsp_filters/master/images/output.png)
