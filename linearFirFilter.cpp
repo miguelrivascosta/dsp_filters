@@ -4,15 +4,12 @@
 
 #include "data.h"
 #include "b.h"
+
 #include <chrono>
 void linearFirFilter(double *);
 int main() {
     double y[dataSize] = {0};
-    auto start = std::chrono::high_resolution_clock::now();
     linearFirFilter(y);
-    auto diff = std::chrono::high_resolution_clock::now()-start;
-    auto t1 = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
-    std::cout<<"Loop1: " << t1.count() << std::endl;
     std::ofstream f;
     f.open ("yFilt_linear");
     for (int i = 0; i < dataSize; i++)
